@@ -84,6 +84,8 @@ if [ "$ASSISTANT_NAME" != "Andy" ]; then
   if [ -f "$ENV_FILE" ] && grep -q '^ASSISTANT_NAME=' "$ENV_FILE"; then
     sed "s|^ASSISTANT_NAME=.*|ASSISTANT_NAME=\"$ASSISTANT_NAME\"|" "$ENV_FILE" > "$ENV_FILE.tmp" && mv "$ENV_FILE.tmp" "$ENV_FILE"
   else
+    # Ensure trailing newline before appending
+    [ -s "$ENV_FILE" ] && [ "$(tail -c1 "$ENV_FILE")" != "" ] && echo >> "$ENV_FILE"
     echo "ASSISTANT_NAME=\"$ASSISTANT_NAME\"" >> "$ENV_FILE"
   fi
   log "Set ASSISTANT_NAME=$ASSISTANT_NAME in .env"
